@@ -12,7 +12,7 @@ Parameters:
     Type: String
   GuarddutyNonArchivedFindingsParamDaysHighSev:
     Default: '1'
-    Type: String
+    Type: String   
   GuarddutyNonArchivedFindingsParamDaysLowSev:
     Default: '30'
     Type: String
@@ -209,7 +209,7 @@ Resources:
   LambdaServiceRole:
     Type: 'AWS::IAM::Role'
     Properties:
-      RoleName: 'config-sechub-lambda-role'
+      RoleName: !Sub 'config-sechub-lambda-role-${AWS::Region}'
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -590,28 +590,28 @@ Resources:
         Owner: AWS
         SourceIdentifier: CMK_BACKING_KEY_ROTATION_ENABLED
     Type: AWS::Config::ConfigRule
-  CodebuildProjectEnvvarAwscredCheck:
-    Properties:
-      ConfigRuleName: codebuild-project-envvar-awscred-check
-      Description: "NIST800-53R4 rule set - AC-6 IA-5(7) SA-3(a)"
-      Scope:
-        ComplianceResourceTypes:
-        - AWS::CodeBuild::Project
-      Source:
-        Owner: AWS
-        SourceIdentifier: CODEBUILD_PROJECT_ENVVAR_AWSCRED_CHECK
-    Type: AWS::Config::ConfigRule
-  CodebuildProjectSourceRepoUrlCheck:
-    Properties:
-      ConfigRuleName: codebuild-project-source-repo-url-check
-      Description: "NIST800-53R4 rule set - SA-3(a)"
-      Scope:
-        ComplianceResourceTypes:
-        - AWS::CodeBuild::Project
-      Source:
-        Owner: AWS
-        SourceIdentifier: CODEBUILD_PROJECT_SOURCE_REPO_URL_CHECK
-    Type: AWS::Config::ConfigRule
+  # CodebuildProjectEnvvarAwscredCheck:
+  #   Properties:
+  #     ConfigRuleName: codebuild-project-envvar-awscred-check
+  #     Description: "NIST800-53R4 rule set - AC-6 IA-5(7) SA-3(a)"
+  #     Scope:
+  #       ComplianceResourceTypes:
+  #       - AWS::CodeBuild::Project
+  #     Source:
+  #       Owner: AWS
+  #       SourceIdentifier: CODEBUILD_PROJECT_ENVVAR_AWSCRED_CHECK
+  #   Type: AWS::Config::ConfigRule
+  # CodebuildProjectSourceRepoUrlCheck:
+  #   Properties:
+  #     ConfigRuleName: codebuild-project-source-repo-url-check
+  #     Description: "NIST800-53R4 rule set - SA-3(a)"
+  #     Scope:
+  #       ComplianceResourceTypes:
+  #       - AWS::CodeBuild::Project
+  #     Source:
+  #       Owner: AWS
+  #       SourceIdentifier: CODEBUILD_PROJECT_SOURCE_REPO_URL_CHECK
+  #   Type: AWS::Config::ConfigRule
   CwLoggroupRetentionPeriodCheck:
     Properties:
       ConfigRuleName: cw-loggroup-retention-period-check
@@ -860,17 +860,17 @@ Resources:
         Owner: AWS
         SourceIdentifier: ELASTICSEARCH_NODE_TO_NODE_ENCRYPTION_CHECK
     Type: AWS::Config::ConfigRule
-  ElbAcmCertificateRequired:
-    Properties:
-      ConfigRuleName: elb-acm-certificate-required
-      Description: "NIST800-53R4 rule set - AC-17(2) SC-7 SC-8 SC-8(1) SC-13"
-      Scope:
-        ComplianceResourceTypes:
-        - AWS::ElasticLoadBalancing::LoadBalancer
-      Source:
-        Owner: AWS
-        SourceIdentifier: ELB_ACM_CERTIFICATE_REQUIRED
-    Type: AWS::Config::ConfigRule
+  # ElbAcmCertificateRequired:
+  #   Properties:
+  #     ConfigRuleName: elb-acm-certificate-required
+  #     Description: "NIST800-53R4 rule set - AC-17(2) SC-7 SC-8 SC-8(1) SC-13"
+  #     Scope:
+  #       ComplianceResourceTypes:
+  #       - AWS::ElasticLoadBalancing::LoadBalancer
+  #     Source:
+  #       Owner: AWS
+  #       SourceIdentifier: ELB_ACM_CERTIFICATE_REQUIRED
+  #   Type: AWS::Config::ConfigRule
   ElbCrossZoneLoadBalancingEnabled:
     Properties:
       ConfigRuleName: elb-cross-zone-load-balancing-enabled
@@ -945,38 +945,38 @@ Resources:
         Owner: AWS
         SourceIdentifier: ENCRYPTED_VOLUMES
     Type: AWS::Config::ConfigRule
-  GuarddutyEnabledCentralized:
-    Properties:
-      ConfigRuleName: guardduty-enabled-centralized
-      Description: "NIST800-53R4 rule set - AC-2(1) AC-2(4) AC-2(12)(a) AC-2(g) AC-17(1) AU-6(1)(3) CA-7(a)(b) RA-5 SA-10 SI-4(1) SI-4(2) SI-4(4) SI-4(5) SI-4(16) SI-4(a)(b)(c)"
-      Source:
-        Owner: AWS
-        SourceIdentifier: GUARDDUTY_ENABLED_CENTRALIZED
-    Type: AWS::Config::ConfigRule
-  GuarddutyNonArchivedFindings:
-    Properties:
-      ConfigRuleName: guardduty-non-archived-findings
-      Description: "NIST800-53R4 rule set - IR-4(1) IR-6(1) IR-7(1) RA-5 SA-10 SI-4(a)(b)(c)"
-      InputParameters:
-        daysHighSev:
-          Fn::If:
-          - guarddutyNonArchivedFindingsParamDaysHighSev
-          - Ref: GuarddutyNonArchivedFindingsParamDaysHighSev
-          - Ref: AWS::NoValue
-        daysLowSev:
-          Fn::If:
-          - guarddutyNonArchivedFindingsParamDaysLowSev
-          - Ref: GuarddutyNonArchivedFindingsParamDaysLowSev
-          - Ref: AWS::NoValue
-        daysMediumSev:
-          Fn::If:
-          - guarddutyNonArchivedFindingsParamDaysMediumSev
-          - Ref: GuarddutyNonArchivedFindingsParamDaysMediumSev
-          - Ref: AWS::NoValue
-      Source:
-        Owner: AWS
-        SourceIdentifier: GUARDDUTY_NON_ARCHIVED_FINDINGS
-    Type: AWS::Config::ConfigRule
+  # GuarddutyEnabledCentralized:
+  #   Properties:
+  #     ConfigRuleName: guardduty-enabled-centralized
+  #     Description: "NIST800-53R4 rule set - AC-2(1) AC-2(4) AC-2(12)(a) AC-2(g) AC-17(1) AU-6(1)(3) CA-7(a)(b) RA-5 SA-10 SI-4(1) SI-4(2) SI-4(4) SI-4(5) SI-4(16) SI-4(a)(b)(c)"
+  #     Source:
+  #       Owner: AWS
+  #       SourceIdentifier: GUARDDUTY_ENABLED_CENTRALIZED
+  #   Type: AWS::Config::ConfigRule
+  # GuarddutyNonArchivedFindings:
+  #   Properties:
+  #     ConfigRuleName: guardduty-non-archived-findings
+  #     Description: "NIST800-53R4 rule set - IR-4(1) IR-6(1) IR-7(1) RA-5 SA-10 SI-4(a)(b)(c)"
+  #     InputParameters:
+  #       daysHighSev:
+  #         Fn::If:
+  #         - guarddutyNonArchivedFindingsParamDaysHighSev
+  #         - Ref: GuarddutyNonArchivedFindingsParamDaysHighSev
+  #         - Ref: AWS::NoValue
+  #       daysLowSev:
+  #         Fn::If:
+  #         - guarddutyNonArchivedFindingsParamDaysLowSev
+  #         - Ref: GuarddutyNonArchivedFindingsParamDaysLowSev
+  #         - Ref: AWS::NoValue
+  #       daysMediumSev:
+  #         Fn::If:
+  #         - guarddutyNonArchivedFindingsParamDaysMediumSev
+  #         - Ref: GuarddutyNonArchivedFindingsParamDaysMediumSev
+  #         - Ref: AWS::NoValue
+  #     Source:
+  #       Owner: AWS
+  #       SourceIdentifier: GUARDDUTY_NON_ARCHIVED_FINDINGS
+  #   Type: AWS::Config::ConfigRule
   IamGroupHasUsersCheck:
     Properties:
       ConfigRuleName: iam-group-has-users-check
@@ -1518,30 +1518,30 @@ Resources:
         Owner: AWS
         SourceIdentifier: S3_BUCKET_VERSIONING_ENABLED
     Type: AWS::Config::ConfigRule
-  SagemakerEndpointConfigurationKmsKeyConfigured:
-    Properties:
-      ConfigRuleName: sagemaker-endpoint-configuration-kms-key-configured
-      Description: "NIST800-53R4 rule set - SC-13 SC-28"
-      Source:
-        Owner: AWS
-        SourceIdentifier: SAGEMAKER_ENDPOINT_CONFIGURATION_KMS_KEY_CONFIGURED
-    Type: AWS::Config::ConfigRule
-  SagemakerNotebookInstanceKmsKeyConfigured:
-    Properties:
-      ConfigRuleName: sagemaker-notebook-instance-kms-key-configured
-      Description: "NIST800-53R4 rule set - SC-13 SC-28"
-      Source:
-        Owner: AWS
-        SourceIdentifier: SAGEMAKER_NOTEBOOK_INSTANCE_KMS_KEY_CONFIGURED
-    Type: AWS::Config::ConfigRule
-  SagemakerNotebookNoDirectInternetAccess:
-    Properties:
-      ConfigRuleName: sagemaker-notebook-no-direct-internet-access
-      Description: "NIST800-53R4 rule set - AC-3 AC-4 AC-6 AC-21(b) SC-7 SC-7(3)"
-      Source:
-        Owner: AWS
-        SourceIdentifier: SAGEMAKER_NOTEBOOK_NO_DIRECT_INTERNET_ACCESS
-    Type: AWS::Config::ConfigRule
+  # SagemakerEndpointConfigurationKmsKeyConfigured:
+  #   Properties:
+  #     ConfigRuleName: sagemaker-endpoint-configuration-kms-key-configured
+  #     Description: "NIST800-53R4 rule set - SC-13 SC-28"
+  #     Source:
+  #       Owner: AWS
+  #       SourceIdentifier: SAGEMAKER_ENDPOINT_CONFIGURATION_KMS_KEY_CONFIGURED
+  #   Type: AWS::Config::ConfigRule
+  # SagemakerNotebookInstanceKmsKeyConfigured:
+  #   Properties:
+  #     ConfigRuleName: sagemaker-notebook-instance-kms-key-configured
+  #     Description: "NIST800-53R4 rule set - SC-13 SC-28"
+  #     Source:
+  #       Owner: AWS
+  #       SourceIdentifier: SAGEMAKER_NOTEBOOK_INSTANCE_KMS_KEY_CONFIGURED
+  #   Type: AWS::Config::ConfigRule
+  # SagemakerNotebookNoDirectInternetAccess:
+  #   Properties:
+  #     ConfigRuleName: sagemaker-notebook-no-direct-internet-access
+  #     Description: "NIST800-53R4 rule set - AC-3 AC-4 AC-6 AC-21(b) SC-7 SC-7(3)"
+  #     Source:
+  #       Owner: AWS
+  #       SourceIdentifier: SAGEMAKER_NOTEBOOK_NO_DIRECT_INTERNET_ACCESS
+  #   Type: AWS::Config::ConfigRule
   SecretsmanagerScheduledRotationSuccessCheck:
     Properties:
       ConfigRuleName: secretsmanager-scheduled-rotation-success-check
